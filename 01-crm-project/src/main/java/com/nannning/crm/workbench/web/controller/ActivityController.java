@@ -8,6 +8,9 @@ import com.nannning.crm.commons.utils.UUIDUtils;
 import com.nannning.crm.settings.domain.User;
 import com.nannning.crm.settings.service.UserService;
 import com.nannning.crm.workbench.domain.Activity;
+import com.nannning.crm.workbench.domain.ActivityRemark;
+import com.nannning.crm.workbench.mapper.ActivityRemarkMapper;
+import com.nannning.crm.workbench.service.ActivityRemarkService;
 import com.nannning.crm.workbench.service.ActivityService;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -15,6 +18,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.ws.ResponseWrapper;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.*;
@@ -32,6 +37,8 @@ public class ActivityController {
     private UserService userService;
     @Autowired
     private ActivityService activityService;
+    @Autowired
+    private ActivityRemarkService activityRemarkService;
 
     //创建市场活动获取用户下拉列表
     @RequestMapping("/workbench/activity/index.do")
@@ -138,8 +145,8 @@ public class ActivityController {
     public @ResponseBody Object saveEditActivity(Activity activity,HttpSession session){
         //封装参数
         User user= (User) session.getAttribute(Contants.SESSION_USER);
-        activity.setCreateTime(DateUtils.formateDateTime(new Date()));//修改市场活动的时间
-        activity.setCreateBy(user.getId());//修改人
+        activity.setEditTime(DateUtils.formateDateTime(new Date()));//修改市场活动的时间
+        activity.setEditBy(user.getId());//修改人
 
         //调用service层方法，保存修改的市场活动
         ReturnObject returnObject=new ReturnObject();
@@ -391,5 +398,20 @@ public class ActivityController {
 
         return returnObject;
     }
+
+    @RequestMapping("/workbench/activity/detailActivity.do")
+    public String detailActivity(String id,HttpServletRequest request) {
+        //调service方法
+        Activity activity=activityService.queryActivityForDetailById(id);
+        List<ActivityRemark> remarkList=activityRemarkService.queryActivityRemarkForDetailByActivityId(id);
+        //把返回结果存入request中
+        request.setAttribute("activity",activity);
+        request.setAttribute("remarkList",remarkList);
+        //请求转发
+        return "workbench/activity/detail";
+    }
+
+
+
 
 }
