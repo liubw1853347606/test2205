@@ -57,4 +57,7 @@ public interface ActivityRemarkMapper {
     /*根据市场活动id查询市场活动下所以备注的明细信息
     * 市场活动的备注可能不只一条，所以用list*/
     List<ActivityRemark> selectActivityRemarkForDetailByActivityId(String activityId);
+
+    /*添加市场活动备注*/
+    int insertActivityRemark(ActivityRemark remark);
 }

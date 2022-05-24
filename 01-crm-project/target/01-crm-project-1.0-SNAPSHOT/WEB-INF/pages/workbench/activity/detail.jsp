@@ -51,6 +51,51 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 		$(".myHref").mouseout(function(){
 			$(this).children("span").css("color","#E6E6E6");
 		});
+
+		//给"保存"按钮添加单击事件
+		$("#saveCreateActivityRemarkBtn").click(function () {
+			//收集参数
+			var noteContent=$.trim($("#remark").val());
+			var activityId='${activity.id}';//el表达式要用‘’，不然jsp会认为它是个变量
+			if(noteContent==""){
+				alert("备注不能为空");
+				return;
+			}
+			$.ajax({
+				url:'workbench/activity/saveCreateActivityRemark.do',
+				data:{
+					"noteContent":noteContent,
+					"activityId":activityId
+				},
+				type:'post',
+				dataType:'json',
+				success:function (data) {
+					if(data.code=="1"){
+						//清空输入框
+						$("#remark").val("");
+						//刷新备注列表
+						var htmlStr="";
+						htmlStr+="<div id=\"div_"+data.retData.id+"\" class=\"remarkDiv\" style=\"height: 60px;\">";
+						htmlStr+="<img title=\"${sessionScope.sessionUser.name}\" src=\"image/user-thumbnail.png\" style=\"width: 30px; height:30px;\">";
+						htmlStr+="<div style=\"position: relative; top: -40px; left: 40px;\" >";
+						htmlStr+="<h5>"+data.retData.noteContent+"</h5>";
+						htmlStr+="<font color=\"gray\">市场活动</font> <font color=\"gray\">-</font> <b>${activity.name}</b> <small style=\"color: gray;\"> "+data.retData.createTime+" 由${sessionScope.sessionUser.name}创建</small>";
+						htmlStr+="<div style=\"position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;\">";
+						htmlStr+="<a class=\"myHref\" name=\"editA\" remarkId=\""+data.retData.id+"\" href=\"javascript:void(0);\"><span class=\"glyphicon glyphicon-edit\" style=\"font-size: 20px; color: #E6E6E6;\"></span></a>";
+						htmlStr+="&nbsp;&nbsp;&nbsp;&nbsp;";
+						htmlStr+="<a class=\"myHref\" name=\"deleteA\" remarkId=\""+data.retData.id+"\" href=\"javascript:void(0);\"><span class=\"glyphicon glyphicon-remove\" style=\"font-size: 20px; color: #E6E6E6;\"></span></a>";
+						htmlStr+="</div>";
+						htmlStr+="</div>";
+						htmlStr+="</div>";
+						$("#remarkDiv").before(htmlStr);
+					}else{
+						//提示信息
+						alert(data.message);
+					}
+				}
+
+			});
+		});
 	});
 	
 </script>
@@ -161,7 +206,8 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 		<!--遍历remarkList，显示所有的备注-->
 		<c:forEach items="${remarkList}" var="remark">
 		<!-- 备注1 -->
-		<div class="remarkDiv" style="height: 60px;">
+
+		<div id="div_${remark.id}" class="remarkDiv" style="height: 60px;">
 			<img title="${remark.createBy}" src="image/user-thumbnail.png" style="width: 30px; height:30px;">
 			<div style="position: relative; top: -40px; left: 40px;" >
 				<h5>${remark.noteContent}</h5>
@@ -194,7 +240,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				<textarea id="remark" class="form-control" style="width: 850px; resize : none;" rows="2"  placeholder="添加备注..."></textarea>
 				<p id="cancelAndSaveBtn" style="position: relative;left: 737px; top: 10px; display: none;">
 					<button id="cancelBtn" type="button" class="btn btn-default">取消</button>
-					<button type="button" class="btn btn-primary">保存</button>
+					<button type="button" class="btn btn-primary" id="saveCreateActivityRemarkBtn">保存</button>
 				</p>
 			</form>
 		</div>

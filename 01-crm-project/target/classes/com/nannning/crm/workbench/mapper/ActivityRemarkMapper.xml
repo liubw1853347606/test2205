@@ -166,6 +166,7 @@
     where id = #{id,jdbcType=CHAR}
   </update>
 
+  <!--查询市场活动备注-->
   <select id="selectActivityRemarkForDetailByActivityId" parameterType="string" resultMap="BaseResultMap">
     select ar.id,ar.note_content,ar.create_time,u1.name as create_by,ar.edit_time,u2.name as edit_by,
     ar.edit_flag
@@ -173,5 +174,13 @@
     join tbl_user u1 on ar.create_by=u1.id
     left join tbl_user u2 on ar.edit_by=u2.id
     where ar.activity_id=#{activityId}
+    order by ar.create_time asc
   </select>
+
+
+  <!--添加市场活动备注-->
+  <insert id="insertActivityRemark" parameterType="com.nannning.crm.workbench.domain.ActivityRemark">
+    insert into tbl_activity_remark(id, note_content, create_time, create_by, edit_flag, activity_id)
+    values (#{id},#{noteContent},#{createTime},#{createBy},#{editFlag},#{activityId})
+  </insert>
 </mapper>
