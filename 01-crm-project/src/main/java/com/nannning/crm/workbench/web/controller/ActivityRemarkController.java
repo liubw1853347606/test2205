@@ -51,4 +51,58 @@ public class ActivityRemarkController {
 
         return returnObject;
     }
+    /*删除市场活动备注*/
+    @RequestMapping("/workbench/activity/deleteActivityRemarkById.do")
+    public @ResponseBody Object deleteActivityRemarkById(String id){
+
+        ReturnObject returnObject=new ReturnObject();
+        try {
+            //调用service层方法，删除市场活动备注
+            int ret = activityRemarkService.deleteActivityRemarkById(id);
+
+            if(ret>0){
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
+                returnObject.setRetData(id);
+            }else{
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+                returnObject.setMessage("系统忙，请稍后重试....");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("系统忙，请稍后重试....");
+        }
+
+        return returnObject;
+    }
+
+    //修改市场活动备注
+    @RequestMapping("/workbench/activity/saveEditActivityRemark.do")
+    public @ResponseBody Object saveEditActivityRemark(ActivityRemark remark,HttpSession session){
+        User user= (User) session.getAttribute(Contants.SESSION_USER);
+        //收集参数
+        remark.setEditBy(user.getId());
+        remark.setEditTime(DateUtils.formateDateTime(new Date()));
+        remark.setEditFlag(Contants.REMARK_EDIT_FLAG_YES_EDITED);
+
+        ReturnObject returnObject=new ReturnObject();
+        try {
+            //调用service层方法，删除市场活动备注
+            int ret = activityRemarkService.updateActivityRemark(remark);
+
+            if(ret>0){
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
+                returnObject.setRetData(remark);
+            }else{
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+                returnObject.setMessage("系统忙，请稍后重试....");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("系统忙，请稍后重试....");
+        }
+
+        return returnObject;
+    }
 }

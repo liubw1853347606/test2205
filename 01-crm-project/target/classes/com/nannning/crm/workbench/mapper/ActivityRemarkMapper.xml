@@ -183,4 +183,18 @@
     insert into tbl_activity_remark(id, note_content, create_time, create_by, edit_flag, activity_id)
     values (#{id},#{noteContent},#{createTime},#{createBy},#{editFlag},#{activityId})
   </insert>
+
+  <!--删除市场活动备注-->
+  <delete id="deleteActivityRemarkById" parameterType="java.lang.String">
+    delete from tbl_activity_remark
+    where id=#{id}
+  </delete>
+
+  <!--修改市场活动备注-->
+  <update id="updateActivityRemark" parameterType="com.nannning.crm.workbench.domain.ActivityRemark">
+    update tbl_activity_remark
+    set note_content=#{noteContent},edit_time=#{editTime},edit_by=#{editBy},
+    edit_flag=#{editFlag}
+    where id=#{id}
+  </update>
 </mapper>
