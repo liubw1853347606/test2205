@@ -158,6 +158,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				data:{
 					id:id,
 					noteContent:noteContent
+
 				},
 				type:'post',
 				dataType:'json',

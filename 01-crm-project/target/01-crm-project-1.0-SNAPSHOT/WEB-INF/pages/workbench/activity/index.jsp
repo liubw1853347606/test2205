@@ -29,6 +29,10 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 
 			//弹出创建市场活动的模态窗口
 			$("#createActivityModal").modal("show");
+
+			//创建市场活动的模态窗口的下拉列表默认当前用户
+			var id='${sessionScope.sessionUser.id}';
+			$("#create-marketActivityOwner").val(id);
 		})
 		//给"保存"按钮添加单击事件
 		$("#saveCreateActivityBtn").click(function () {
@@ -677,7 +681,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
                     <button id="exportActivityXzBtn" type="button" class="btn btn-default"><span class="glyphicon glyphicon-export"></span> 下载列表数据（选择导出）</button>
                 </div>
 			</div>
-			<div style="position: relative;top: 10px;">
+			<div style="position: relative;top:10px;">
 				<table class="table table-hover">
 					<thead>
 						<tr style="color: #B3B3B3;">
@@ -706,7 +710,9 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					</tbody>
 				</table>
 			</div>
+			<div style="height: 50px; position: relative;top: 60px;">--%>
             <div id="demo_pag1"></div>
+			</div>
 			
 			<%--<div style="height: 50px; position: relative;top: 30px;">
 				<div>
