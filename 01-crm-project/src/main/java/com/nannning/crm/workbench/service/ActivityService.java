@@ -29,4 +29,16 @@ public interface ActivityService {
 
     /*根据id来查询市场活动的明细*/
     Activity queryActivityForDetailById(String id);
+
+    /*根据clueId查询该线索相关联的市场活动的明细信息*/
+    List<Activity> queryActivityForDetailByClueId(String clueId);
+
+    /*根据name模糊查询市场活动，并且把已经跟clueId关联过的市场活动排除*/
+    List<Activity> queryActivityForDetailByClueNameId(Map<String,Object> map);
+
+    /*根据ids查询市场活动的明细信息*/
+    List<Activity> queryActivityForDetailByIds(String[] ids);
+
+    /*市场活动源 根据name模糊查询市场活动，并且查询那些跟clueId关联过的市场活动*/
+    List<Activity> queryActivityForConvertByNameClueId(Map<String,Object> map);
 }

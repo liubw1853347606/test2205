@@ -172,7 +172,6 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				return;
 			}
 
-
 			if(window.confirm("确定删除吗？")){
 			var ids = "";//拼接批量选择的市场活动
 			$.each(chekkedIds, function () {//id=xxxx&id=xxx&.....&id=xxx&
@@ -238,10 +237,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					//弹出模态窗口
 					$("#editActivityModal").modal("show");
 				}
-
 			});
-
-
 		});
 
 		//给更新按钮添加单击事件
@@ -429,17 +425,13 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
                 //对容器调用bs_pagination工具函数，显示翻页信息
                 $("#demo_pag1").bs_pagination({
                     currentPage:pageNo,//当前页号,相当于pageNo
-
                     rowsPerPage:pageSize,//每页显示条数,相当于pageSize
                     totalRows:data.totalRows,//总条数
                     totalPages: totalPages,  //总页数,必填参数.
-
                     visiblePageLinks:5,//最多可以显示的卡片数
-
                     showGoToPage:true,//是否显示"跳转到"部分,默认true--显示
                     showRowsPerPage:true,//是否显示"每页显示条数"部分。默认true--显示
                     showRowsInfo:true,//是否显示记录的信息，默认true--显示
-
                     //用户每次切换页号，都自动触发本函数;
                     //每次返回切换页号之后的pageNo和pageSize
                     onChangePage: function(event,pageObj) { // returns page_num and rows_per_page after a link has clicked
@@ -710,10 +702,8 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					</tbody>
 				</table>
 			</div>
-			<div style="height: 50px; position: relative;top: 60px;">--%>
             <div id="demo_pag1"></div>
-			</div>
-			
+
 			<%--<div style="height: 50px; position: relative;top: 30px;">
 				<div>
 					<button type="button" class="btn btn-default" style="cursor: default;">共<b id="totalRowsB">50</b>条记录</button>
